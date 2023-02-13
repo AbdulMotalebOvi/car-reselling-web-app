@@ -5,11 +5,10 @@ const useBuyer = email => {
     const [BuyerLoader, setBuyerLoader] = useState(true)
     useEffect(() => {
         if (email) {
-            fetch(`http://localhost:5000/users/buyer/${email}`)
+            fetch(`https://assignment-12-server-six-chi.vercel.app/users/buyer/${email}`)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
-                    setBuyer(data.isAdmin)
+                    setBuyer(data.isBuyer)
                     setBuyerLoader(false)
                 })
         }

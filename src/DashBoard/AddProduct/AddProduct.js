@@ -1,18 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { Link, useNavigate, useNavigation } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
 import { UseAuthContext } from '../../UseContext/AuthContext';
 
 const AddProduct = () => {
     const { user } = useContext(UseAuthContext)
     const [selectValue, setSelectValue] = useState('');
+
     const onChange = (event) => {
         const value = event.target.value;
         setSelectValue(value)
 
     };
-    console.log(selectValue)
     const location = [
         { place: 'Dhaka', id: 1, value: 'Dhaka' },
         { place: 'Feni', id: 2, value: 'Feni' },
@@ -43,6 +43,9 @@ const AddProduct = () => {
 
     const addUser = (data) => {
         // const { email, password } = data
+        console.log(
+            data
+        );
         const image = data.image[0]
         const formData = new FormData();
         formData.append('image', image)
@@ -65,8 +68,9 @@ const AddProduct = () => {
                     Category: selectValue
 
                 }
+
                 if (selectValue === 'Micro-Bus') {
-                    fetch('http://localhost:5000/usedMicroBus', {
+                    fetch('https://assignment-12-server-six-chi.vercel.app/usedMicroBus', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',
@@ -78,16 +82,17 @@ const AddProduct = () => {
                         .then(res => res.json())
                         .then(data => {
                             if (data.acknowledged) {
+
                                 toast.success(`product added successfully`)
                                 reset()
-                                console.log(data);
+
                                 navigate('/microbus')
                             }
                             console.log(data);
                         })
                 }
                 else if (selectValue === 'Luxury-Car') {
-                    fetch('http://localhost:5000/luxuryCar', {
+                    fetch('https://assignment-12-server-six-chi.vercel.app/luxuryCar', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',
@@ -98,6 +103,7 @@ const AddProduct = () => {
 
                         .then(res => res.json())
                         .then(data => {
+
                             if (data.acknowledged) {
                                 toast.success(`product added successfully`)
                                 reset()
@@ -108,7 +114,7 @@ const AddProduct = () => {
                         })
                 }
                 else if (selectValue === 'Electronic-Car') {
-                    fetch('http://localhost:5000/electronicCarFind', {
+                    fetch('https://assignment-12-server-six-chi.vercel.app/electronicCarFind', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',
@@ -120,6 +126,7 @@ const AddProduct = () => {
                         .then(res => res.json())
                         .then(data => {
                             if (data.acknowledged) {
+
                                 toast.success(`product added successfully`)
                                 reset()
                                 console.log(data);
@@ -132,11 +139,13 @@ const AddProduct = () => {
 
 
             })
+
             .catch((error) => {
                 console.error('Error:', error);
             });
 
     }
+
     return (
         <div className='w-3/4 p-7 '>
             <form onSubmit={handleSubmit(addUser)}>
@@ -147,7 +156,7 @@ const AddProduct = () => {
                             <label className="label">
                                 <span className="label-text">Product Name</span>
                             </label>
-                            <input type='text' className="input input-bordered w-full "  {...register("name", { required: "Name is required" })} />
+                            <input type='text' className="input input-bordered w-full capitalize"  {...register("name", { required: "Name is required" })} />
 
                             {errors.name && <p className='text-red-500 font-semibold'>{errors.name?.message}</p>}
                         </div>
@@ -166,7 +175,7 @@ const AddProduct = () => {
 
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Enter amount</span>
+                                <span className="label-text">Enter Resale Price</span>
                             </label>
                             <label className="input-group">
                                 <span>Price</span>
@@ -244,7 +253,7 @@ const AddProduct = () => {
                         </div>
                     </div>
                     <label className="label">
-                        <span className="label-text">Category </span>
+                        <span className="label-text">Description </span>
                     </label>
 
                     <input type="text" placeholder="Product Description" className="input my-3 input-bordered w-full max-w-xs"  {...register("text", { required: true })} />

@@ -14,8 +14,8 @@ const SignIn = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const [signInToken, setSignInToken] = useState('')
+    const [error, setError] = useState()
     const [token] = useToken(signInToken)
-
 
     let from = location.state?.from?.pathname || "/";
     if (token) {
@@ -26,12 +26,19 @@ const SignIn = () => {
         login(data.email, data.password)
             .then(result => {
                 const user = result.user
-                setSignInToken(data.email)
+                setSignInToken(user.email)
                 toast.success('Login Successful')
 
                 console.log(user)
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+
+                const errorMessage = err.message;
+                setError(errorMessage)
+                console.log(errorMessage)
+            })
+        setError('')
+
     }
     const handlerToSignIn = () => {
         signInWithGoogle()
@@ -48,7 +55,6 @@ const SignIn = () => {
 
     return (
         <div className='max-w-screen-xl mx-auto  flex flex-col items-center'>
-            <h1></h1>
             <Lottie className='w-[80px] ' animationData={animations} loop={true} />
             <div className='card  w-96 bg-base-100 mb-5  p-7'>
                 <form onSubmit={handleSubmit(submit)} >
@@ -70,7 +76,7 @@ const SignIn = () => {
                                 minLength: { value: 6, message: 'Password Must be At lest 6 characters or longer' }
                             }
                         )} />
-
+                        <p className='text-red-600 font-semibold '>{error}</p>
 
                         {errors.password?.type === 'required' && <p className='text-red-600 font-semibold'>Password is required</p>}
                         <label className="label">

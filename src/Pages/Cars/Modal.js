@@ -4,21 +4,25 @@ import { UseAuthContext } from '../../UseContext/AuthContext';
 
 const Modal = ({ useCars }) => {
     const { user } = useContext(UseAuthContext)
-    const { name: vehiclesName, image, Resale, location } = useCars
+    const { productsName,
+        image, Resale, Number, Location } = useCars
+
     const handlerToSubmit = event => {
         event.preventDefault()
         const form = event.target;
         const email = form.email.value;
         const number = form.number.value
         const booking = {
-            vehiclesName,
+            productsName,
             email,
             number,
             Resale,
             image,
-            location
+            Location
         }
-        fetch('http://localhost:5000/bookings', {
+
+
+        fetch('https://assignment-12-server-six-chi.vercel.app/bookings', {
             method: "POST",
             headers: {
                 'content-type': 'application/json'
@@ -47,8 +51,11 @@ const Modal = ({ useCars }) => {
                     <div className="card card-compact ">
                         <figure><img className='w-[200px] ' src={image} alt="Album" /></figure>
                         <div className="card-body">
-                            <h2 className="card-title">{vehiclesName}</h2>
-                            <p className='text-[15px] font-bold text-red-500'>Resale Price:${Resale}</p>
+                            <h2 className="card-title">{productsName}</h2>
+                            <div className='flex justify-between'>
+                                <p className='text-[15px] font-bold text-red-500'>Resale Price: ${Resale}</p>
+                                <p className='text-[15px] font-bold text-red-500'>Location: {Location}</p>
+                            </div>
                         </div>
                     </div>
                     <form onSubmit={handlerToSubmit} className='mt-3 space-y-5'>
@@ -60,6 +67,8 @@ const Modal = ({ useCars }) => {
 
                         <input type="number"
                             name='number'
+                            defaultValue={Number}
+                            readOnly
                             placeholder="Phone" className="input input-bordered w-full " />
                         <input type="email"
                             name='email'

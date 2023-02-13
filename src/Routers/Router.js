@@ -16,9 +16,11 @@ import ErrorElement from "../DisplayError/ErrorElement";
 import AllUsers from "../DashBoard/Allusers/AllUsers";
 import AdminRoute from "../DashBoard/AdminRoute/AdminRoute";
 import AddProduct from "../DashBoard/AddProduct/AddProduct";
-import MyProducts from "../DashBoard/MyProducts/MyProducts";
 import AllSellers from "../DashBoard/AllSellers/AllSellers";
 import AllBuyers from "../DashBoard/AllBuyers/AllBuyers";
+import SellerRoute from "../DashBoard/SellerRoute/SellerRoute";
+import BuyerRoute from "../DashBoard/BuyerRoute/BuyerRoute";
+import Payment from "../DashBoard/MyBookings/Payment";
 
 
 export const router = createBrowserRouter([
@@ -50,22 +52,20 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/profile',
-                element: <Profile></Profile>
+                element: <Profile></Profile>,
+
             },
             {
                 path: '/microbus',
                 element: <PrivateRoute> <Micro></Micro></PrivateRoute>,
-                loader: () => fetch('http://localhost:5000/usedMicroBus')
+                loader: () => fetch('https://assignment-12-server-six-chi.vercel.app/usedMicroBus')
             },
             {
                 path: '/electricCar',
                 element: <PrivateRoute><Electric></Electric></PrivateRoute>,
-                loader: () => fetch('http://localhost:5000/electronicCar')
+                loader: () => fetch('https://assignment-12-server-six-chi.vercel.app/electronicCar')
             },
-            {
-                path: '/myProducts',
-                element: <MyProducts></MyProducts>
-            }
+
 
         ]
     },
@@ -76,7 +76,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/dashboard',
-                element: <Bookings></Bookings>,
+                element: <Bookings></Bookings>
             },
             {
                 path: '/dashboard/users',
@@ -84,7 +84,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/addProduct',
-                element: <AddProduct></AddProduct>
+                element: <SellerRoute><AddProduct></AddProduct></SellerRoute>
             },
             {
                 path: '/dashboard/allSellers',
@@ -93,6 +93,11 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard/allBuyers',
                 element: <AllBuyers></AllBuyers>
+            },
+            {
+                path: '/dashboard/payment/:id',
+                element: <BuyerRoute> <Payment></Payment></BuyerRoute>,
+                loader: ({ params }) => fetch(`https://assignment-12-server-six-chi.vercel.app/bookings/${params.id}`)
             }
 
         ]

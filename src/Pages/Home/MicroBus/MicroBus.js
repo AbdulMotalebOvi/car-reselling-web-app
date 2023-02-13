@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MicroBus = ({ car, setUsedCars }) => {
-    const { image, name, price, Resale, location } = car
+    const { image, name, price, Resale, Location } = car
     return (
         <div className='max-w-screen-xl mx-auto'>
 
@@ -28,7 +28,7 @@ const MicroBus = ({ car, setUsedCars }) => {
                         <div>
                             <dt className="sr-only">Address</dt>
 
-                            <dd className="text-[15px]">Location: <span className='text-red-500 font-semibold'>{location}</span></dd>
+                            <dd className="text-[15px]">Location: <span className='text-red-500 font-semibold'>{Location}</span></dd>
                         </div>
                         <div>
                             <dt className="sr-only">Address</dt>

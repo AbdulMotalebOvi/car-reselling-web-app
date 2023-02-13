@@ -7,34 +7,45 @@ import { UseAuthContext } from '../../../UseContext/AuthContext';
 import { toast } from 'react-hot-toast';
 import useToken from '../../../hooks/useToken';
 
+
 const SignUp = () => {
     const { signInWithGoogle, createUser, updateInfo } = useContext(UseAuthContext)
     const { register, formState: { errors }, reset, handleSubmit } = useForm();
+    const [selectValue, setSelectValue] = useState('')
     const navigate = useNavigate()
+    const [error, setError] = useState()
 
+    const onChange = (event) => {
+        const value = event.target.value;
+        setSelectValue(value)
+
+    };
     const [userEmail, setUserEmail] = useState('')
+
     const [token] = useToken(userEmail)
 
     if (token) {
         navigate('/')
     }
 
+
     const submit = (data) => {
-        createUser(data.email, data.password, data.Role)
+        createUser(data.email, data.password)
             .then(result => {
                 const user = result.user
                 updateInfo(data.name)
                     .then(() => {
-                        saveUser(data.name, data.email, data.Role)
-                        updateInfo(data.name)
+                        saveUser(data.name, data.email, selectValue)
+
                     })
-                    .catch(err => console.log(err))
+                    .catch(err => {
+                        const errorMessage = err.message;
+                        setError(errorMessage)
+                        console.log(errorMessage)
+                    })
                 toast.success('User Created Successfully')
                 reset()
-
-
             })
-            .catch(err => console.log(err))
     }
     const handlerToSignIn = () => {
         signInWithGoogle()
@@ -44,12 +55,16 @@ const SignUp = () => {
                 console.log(user);
 
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                const errorMessage = err.message;
+                setError(errorMessage)
+
+            })
 
     }
     const saveUser = (name, email, Role) => {
         const user = { name, email, Role }
-        fetch('http://localhost:5000/users', {
+        fetch('https://assignment-12-server-six-chi.vercel.app/users', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -58,7 +73,6 @@ const SignUp = () => {
         })
             .then(res => res.json())
             .then(data => {
-
                 setUserEmail(email)
 
             })
@@ -82,13 +96,14 @@ const SignUp = () => {
                         </label>
                         <input className="input input-bordered w-full " {...register("email", { required: true })} />
 
+                        <p className='text-red-600 font-semibold '>{error}</p>
                         {errors.email?.type === 'required' && <p className='text-red-600 font-semibold'>Email is required</p>}
                         <label className="label">
                             <span className="label-text">Select Your Role</span>
                         </label>
                         <select
                             className="select select-bordered"
-                            {...register("Role", { required: true })} >
+                            {...register("Role", { required: true })} onChange={onChange}>
                             <option value="Buyer">Buyer</option>
                             <option value="Seller">Seller</option>
                         </select>

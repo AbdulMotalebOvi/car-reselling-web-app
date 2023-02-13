@@ -5,7 +5,7 @@ import SingleCar from './SingleCar';
 
 const AllCars = () => {
     const [useCars, setUsedCars] = useState(null)
-    const url = "http://localhost:5000/luxuryCar";
+    const url = "https://assignment-12-server-six-chi.vercel.app/luxuryCar";
     const { data: cars = [] } = useQuery({
         queryKey: ['usedCar'],
         queryFn: async () => {

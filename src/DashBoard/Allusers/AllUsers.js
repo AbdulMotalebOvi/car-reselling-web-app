@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 
 
 const AllUsers = () => {
-    const url = 'http://localhost:5000/users'
+    const url = 'https://assignment-12-server-six-chi.vercel.app/users'
     const { data: allUsers = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -15,7 +15,7 @@ const AllUsers = () => {
 
     })
     const handlerToMakeAdmin = (id) => {
-        fetch(`http://localhost:5000/users/admin/${id}`, {
+        fetch(`https://assignment-12-server-six-chi.vercel.app/users/admin/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -33,7 +33,7 @@ const AllUsers = () => {
     const handlerToDelete = id => {
         const procced = window.confirm('Are you Sure You Want to Delete this user?')
         if (procced) {
-            fetch(`http://localhost:5000/delete/${id}`, {
+            fetch(`https://assignment-12-server-six-chi.vercel.app/delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
